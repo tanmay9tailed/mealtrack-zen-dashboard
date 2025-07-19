@@ -2,7 +2,13 @@ import React, { useState } from 'react';
 import { doc, setDoc } from 'firebase/firestore';
 import { db, appId } from '../../../firebase/config';
 
-const SettingsModal = ({ user, settings, onClose }) => {
+interface SettingsModalProps {
+    user: any;
+    settings: { startDate: string; mealTypes: string[] };
+    onClose: (settings: { startDate: string; mealTypes: string[] } | null) => void;
+}
+
+const SettingsModal = ({ user, settings, onClose }: SettingsModalProps) => {
     const [startDate, setStartDate] = useState(settings.startDate || '');
     const [mealTypes, setMealTypes] = useState(settings.mealTypes || ['Lunch', 'Dinner']);
     const [customMeal, setCustomMeal] = useState('');
@@ -14,7 +20,7 @@ const SettingsModal = ({ user, settings, onClose }) => {
         }
     };
 
-    const handleRemoveMeal = (mealToRemove) => {
+    const handleRemoveMeal = (mealToRemove: string) => {
         setMealTypes(mealTypes.filter(meal => meal !== mealToRemove));
     };
 

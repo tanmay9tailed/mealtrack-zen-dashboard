@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Navbar = ({ user, onLogout }) => {
+const Navbar = ({ user, onLogout }: { user: any; onLogout: () => void }) => {
     return (
         <nav className="bg-white/80 backdrop-blur-lg sticky top-0 z-40 shadow-sm w-full p-4 border-b border-slate-200">
             <div className="container mx-auto flex justify-between items-center">

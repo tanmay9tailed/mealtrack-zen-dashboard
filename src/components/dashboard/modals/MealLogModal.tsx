@@ -2,7 +2,15 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { generateComplaintDraft } from '../../../services/geminiService';
 import Spinner from '../../common/Spinner';
 
-const MealLogModal = ({ date, settings, mealData, onClose, onSave }) => {
+interface MealLogModalProps {
+    date: string;
+    settings: { mealTypes: string[]; startDate: string };
+    mealData: { [key: string]: any };
+    onClose: () => void;
+    onSave: (date: string, data: any) => void;
+}
+
+const MealLogModal = ({ date, settings, mealData, onClose, onSave }: MealLogModalProps) => {
     const [log, setLog] = useState({});
     const [notes, setNotes] = useState('');
     const [generatedDraft, setGeneratedDraft] = useState('');
@@ -10,7 +18,7 @@ const MealLogModal = ({ date, settings, mealData, onClose, onSave }) => {
 
     useEffect(() => {
         const initialLog = mealData[date] || {};
-        const populatedLog = {};
+        const populatedLog: { [key: string]: any } = {};
         settings.mealTypes.forEach(meal => {
             populatedLog[meal] = initialLog[meal] || null;
         });
@@ -19,7 +27,7 @@ const MealLogModal = ({ date, settings, mealData, onClose, onSave }) => {
         setGeneratedDraft('');
     }, [date, mealData, settings]);
 
-    const handleStatusChange = (meal, status) => {
+    const handleStatusChange = (meal: string, status: string) => {
         setLog(prevLog => ({ ...prevLog, [meal]: status }));
     };
 
@@ -80,7 +88,7 @@ const MealLogModal = ({ date, settings, mealData, onClose, onSave }) => {
                     ))}
                     <div>
                         <label htmlFor="notes" className="text-md font-semibold text-slate-700">Notes (for missed meals)</label>
-                        <textarea id="notes" rows="3" value={notes} onChange={(e) => setNotes(e.target.value)} className="w-full mt-2 p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition"></textarea>
+                        <textarea id="notes" rows={3} value={notes} onChange={(e) => setNotes(e.target.value)} className="w-full mt-2 p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition"></textarea>
                     </div>
                     {showAIAssistant && (
                         <div className="border-t border-slate-200 pt-4">

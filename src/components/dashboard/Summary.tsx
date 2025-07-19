@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Summary = ({ stats }) => {
+const Summary = ({ stats }: { stats: { delivered: number; missed: number; rate: number } }) => {
     return (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <div className="bg-white p-6 rounded-xl border border-slate-200/80 shadow-sm flex flex-col justify-center items-center transform hover:-translate-y-1 transition-all duration-300">

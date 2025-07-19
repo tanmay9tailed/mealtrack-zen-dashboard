@@ -10,19 +10,28 @@ import SettingsModal from './modals/SettingsModal';
 import MealLogModal from './modals/MealLogModal';
 import GeminiReportModal from './modals/GeminiReportModal';
 
-const getLocalDateString = (date) => {
+const getLocalDateString = (date: Date): string => {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
 };
 
-const Dashboard = ({ user, onLogout }) => {
-    const [settings, setSettings] = useState({ startDate: getLocalDateString(new Date()), mealTypes: ['Lunch', 'Dinner'] });
-    const [mealData, setMealData] = useState({});
+interface Settings {
+    startDate: string;
+    mealTypes: string[];
+}
+
+interface MealData {
+    [key: string]: any;
+}
+
+const Dashboard = ({ user, onLogout }: { user: any; onLogout: () => void }) => {
+    const [settings, setSettings] = useState<Settings>({ startDate: getLocalDateString(new Date()), mealTypes: ['Lunch', 'Dinner'] });
+    const [mealData, setMealData] = useState<MealData>({});
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
     const [isMealLogOpen, setIsMealLogOpen] = useState(false);
-    const [selectedDate, setSelectedDate] = useState(null);
+    const [selectedDate, setSelectedDate] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [isReportModalOpen, setIsReportModalOpen] = useState(false);
     const [weeklyReport, setWeeklyReport] = useState('');
@@ -33,23 +42,33 @@ const Dashboard = ({ user, onLogout }) => {
         const fetchSettings = async () => {
             const settingsRef = doc(db, `artifacts/${appId}/users/${user.uid}/settings/config`);
             const docSnap = await getDoc(settingsRef);
-            if (docSnap.exists()) { setSettings(docSnap.data()); } else { setIsSettingsOpen(true); }
+            if (docSnap.exists()) { 
+                const data = docSnap.data() as Settings;
+                setSettings(data);
+            } else { 
+                setIsSettingsOpen(true); 
+            }
             setIsLoading(false);
         };
         fetchSettings();
         const dataCollectionPath = `artifacts/${appId}/users/${user.uid}/meals`;
         const q = query(collection(db, dataCollectionPath));
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
-            const data = {};
+            const data: MealData = {};
             querySnapshot.forEach((doc) => { data[doc.id] = doc.data(); });
             setMealData(data);
         });
         return () => unsubscribe();
     }, [user]);
     
-    const handleSettingsClose = (newSettings) => { if (newSettings) { setSettings(newSettings); } setIsSettingsOpen(false); };
-    const handleDayClick = (dateStr) => { setSelectedDate(dateStr); setIsMealLogOpen(true); };
-    const handleMealLogSave = async (date, dataToSave) => {
+    const handleSettingsClose = (newSettings: Settings | null) => { 
+        if (newSettings) { 
+            setSettings(newSettings); 
+        } 
+        setIsSettingsOpen(false); 
+    };
+    const handleDayClick = (dateStr: string) => { setSelectedDate(dateStr); setIsMealLogOpen(true); };
+    const handleMealLogSave = async (date: string, dataToSave: any) => {
         if (!user) return;
         try {
             const docRef = doc(db, `artifacts/${appId}/users/${user.uid}/meals`, date);
@@ -73,7 +92,7 @@ const Dashboard = ({ user, onLogout }) => {
                 const d = new Date(dateStr);
                 return d >= lastWeek && d <= today;
             })
-            .map(([date, data]) => ({ date, ...data }));
+            .map(([date, data]) => ({ date, ...(data || {}) }));
         
         const report = await generateWeeklyReport(last7DaysData);
         setWeeklyReport(report);

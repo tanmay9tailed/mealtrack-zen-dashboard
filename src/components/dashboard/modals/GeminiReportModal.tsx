@@ -1,7 +1,13 @@
 import React from 'react';
 import Spinner from '../../common/Spinner';
 
-const GeminiReportModal = ({ report, isLoading, onClose }) => {
+interface GeminiReportModalProps {
+    report: string;
+    isLoading: boolean;
+    onClose: () => void;
+}
+
+const GeminiReportModal = ({ report, isLoading, onClose }: GeminiReportModalProps) => {
     return (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex justify-center items-center p-4 z-50 animate-fade-in">
             <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-2xl max-h-[90vh] overflow-y-auto">

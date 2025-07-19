@@ -1,13 +1,19 @@
 import React, { useState, useMemo } from 'react';
 
-const getLocalDateString = (date) => {
+const getLocalDateString = (date: Date): string => {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
 };
 
-const Calendar = ({ settings, mealData, onDayClick }) => {
+interface CalendarProps {
+    settings: { startDate: string; mealTypes: string[] };
+    mealData: { [key: string]: any };
+    onDayClick: (dateStr: string) => void;
+}
+
+const Calendar = ({ settings, mealData, onDayClick }: CalendarProps) => {
     const [currentDate, setCurrentDate] = useState(new Date());
     const today = useMemo(() => new Date(), []);
     const todayStr = getLocalDateString(today);
@@ -31,7 +37,7 @@ const Calendar = ({ settings, mealData, onDayClick }) => {
         return days;
     }, [currentDate, mealData, startDate, today, todayStr]);
     
-    const changeMonth = (offset) => { setCurrentDate(prev => { const newDate = new Date(prev); newDate.setMonth(newDate.getMonth() + offset); return newDate; }); };
+    const changeMonth = (offset: number) => { setCurrentDate(prev => { const newDate = new Date(prev); newDate.setMonth(newDate.getMonth() + offset); return newDate; }); };
 
     return (
         <div className="bg-white p-4 sm:p-6 rounded-2xl shadow-lg border border-slate-200/80">

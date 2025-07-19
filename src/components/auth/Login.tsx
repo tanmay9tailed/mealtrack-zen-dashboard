@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Login = ({ onLogin }) => {
+const Login = ({ onLogin }: { onLogin: () => void }) => {
     return (
         <div className="min-h-screen bg-slate-50 flex flex-col justify-center items-center p-4">
             <div className="w-full max-w-sm">
