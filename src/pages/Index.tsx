@@ -1,11 +1,12 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+// This page is now handled by the main App component
+import React from 'react';
 
 const Index = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
+    <div className="min-h-screen flex items-center justify-center bg-slate-50">
       <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
+        <h1 className="text-4xl font-bold mb-4 text-slate-800">MealTrack Application</h1>
+        <p className="text-xl text-slate-500">This page should not be visible - redirecting to main app...</p>
       </div>
     </div>
   );
