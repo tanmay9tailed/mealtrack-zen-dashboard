@@ -12,7 +12,6 @@ const Navbar = ({ user, onLogout }: { user: any; onLogout: () => void }) => {
           {user.photoURL ? (
             <img
               src={user?.photoURL || "/default-avatar.png"}
-              onError={(e) => (e.target.src = "/default-avatar.png")}
               alt="Profile"
               className="w-10 h-10 rounded-full border-2 border-white shadow"
             />
