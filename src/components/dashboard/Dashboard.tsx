@@ -67,7 +67,9 @@ const Dashboard = ({ user, onLogout }: { user: any; onLogout: () => void }) => {
         } 
         setIsSettingsOpen(false); 
     };
+
     const handleDayClick = (dateStr: string) => { setSelectedDate(dateStr); setIsMealLogOpen(true); };
+
     const handleMealLogSave = async (date: string, dataToSave: any) => {
         if (!user) return;
         try {

@@ -5,6 +5,7 @@
  * @param {string} notes - The user's notes about the issue.
  * @returns {Promise<string>} The generated text from the API.
  */
+
 export const generateComplaintDraft = async (formattedDate, missedMeals, notes) => {
     const prompt = `A customer's meal delivery was missed.
     Date: ${formattedDate}
@@ -14,7 +15,7 @@ export const generateComplaintDraft = async (formattedDate, missedMeals, notes) 
     Based on these details, please draft a polite but firm complaint email to the customer support of a meal delivery service. The email should clearly state the problem, reference the date and missed meals, and request a resolution (like a refund or credit). Keep it concise and professional. Address it to "Customer Support Team".`;
 
     try {
-        const apiKey = ""; // Provided by the environment
+        const apiKey = import.meta.env.VITE_GEMINI_API_KEY; 
         const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
         const response = await fetch(apiUrl, {
             method: 'POST',
@@ -50,7 +51,7 @@ export const generateWeeklyReport = async (last7DaysData) => {
     5. Keep the tone encouraging and helpful. Format the output clearly.`;
 
     try {
-        const apiKey = ""; // Provided by the environment
+        const apiKey = import.meta.env.VITE_GEMINI_API_KEY; // Provided by the environment
         const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
         const response = await fetch(apiUrl, {
             method: 'POST',
