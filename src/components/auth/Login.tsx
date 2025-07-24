@@ -1,6 +1,7 @@
 import React from 'react';
 
 const Login = ({ onLogin }: { onLogin: () => void }) => {
+    console.log("API KEY:", import.meta.env.VITE_API_KEY);
     return (
         <div className="min-h-screen bg-slate-50 flex flex-col justify-center items-center p-4">
             <div className="w-full max-w-sm">
